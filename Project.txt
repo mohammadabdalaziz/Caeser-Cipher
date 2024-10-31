@@ -1,0 +1,324 @@
+#!/bin/bash
+case "$#" in
+1)
+
+case "$1" in
+'e')
+
+echo "Enter the text you want to ENCODE: "
+ read TextToEncode
+
+while [ 1 ]
+ do
+  echo "Enter shift value [1:25]: "
+   read ShiftValue
+  if [ $ShiftValue -ge 1 -a $ShiftValue -le 25 ]
+   then
+     break
+  else echo "The entered KEY value is outside the range!!"
+   fi
+ done
+
+for ((i = 0; i < ${#TextToEncode}; i++));
+ do
+
+     char="${TextToEncode:$i:1}"
+   ascii_value=$(printf '%d' "'$char")
+
+ if [ $ascii_value -gt 122 -o $ascii_value -lt 65  ]
+        then
+        Encoded="$Encoded$char"
+         continue
+      fi
+      if [ $ascii_value -gt 90 -a  $ascii_value -lt 97  ]
+        then
+        Encoded="$Encoded$char"
+         continue
+      fi
+
+      if [ $ascii_value -ge 97 ]
+       then
+	  if [ `expr $ascii_value + $ShiftValue` -gt 122 ]
+		then
+		 char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue - 26`))
+	  else char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue`))
+		Encoded="$Encoded$char"
+        continue
+      fi
+     fi
+
+
+	if [ $ascii_value -le 90 ]
+	 then
+          if [ `expr $ascii_value + $ShiftValue` -gt 90 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue - 26`))
+          else char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue`))
+                Encoded="$Encoded$char"
+        continue
+      fi
+     fi
+
+
+   Encoded="$Encoded$char"
+
+done
+echo "Encoded text : $Encoded"
+;;
+
+'d')
+
+echo "Enter the text you want to DECODE: "
+ read TextToDecode
+
+
+while [ 1 ]
+ do
+  echo "Enter shift value [1:25]: "
+   read ShiftValue
+  if [ $ShiftValue -ge 1 -a $ShiftValue -le 25 ]
+   then
+     break
+  else echo "The entered KEY value is outside the range!!"
+   fi
+ done
+
+
+for ((i = 0; i < ${#TextToDecode}; i++));
+ do
+     char="${TextToDecode:$i:1}"
+   ascii_value=$(printf '%d' "'$char")
+
+
+if [ $ascii_value -gt 122 -o $ascii_value -lt 65  ]
+        then
+        Decoded="$Decoded$char"
+         continue
+      fi
+      if [ $ascii_value -gt 90 -a  $ascii_value -lt 97  ]
+        then
+        Decoded="$Decoded$char"
+         continue
+      fi
+
+      if [ $ascii_value -ge 97 ]
+       then
+	  if [ `expr $ascii_value - $ShiftValue` -lt 97 ]
+		then
+		 char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue + 26`))
+	  else char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue`))
+		Decoded="$Decoded$char"
+        continue
+      fi
+     fi
+
+
+	if [ $ascii_value -le 90 ]
+	 then
+          if [ `expr $ascii_value - $ShiftValue` -lt 65 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue + 26`))
+          else char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue`))
+                Decoded="$Decoded$char"
+        continue
+      fi
+     fi
+
+	Decoded="$Decoded$char"
+
+ done
+echo "Decoded text : $Decoded"
+;;
+
+*)
+echo "OOPS! It seems like the you have selected a service we dont provide): "
+;;
+esac
+
+;;
+
+2)
+
+case "$1" in
+'e')
+
+echo "Enter the text you want to ENCODE: "
+ read TextToEncode
+
+while [ 1 ]
+ do
+  echo "Enter shift value [1:25]: "
+   read ShiftValue
+  if [ $ShiftValue -ge 1 -a $ShiftValue -le 25 ]
+   then
+     break
+  else echo "The entered KEY value is outside the range!!"
+   fi
+ done
+
+for ((i = 0; i < ${#TextToEncode}; i++));
+ do
+
+     char="${TextToEncode:$i:1}"
+   ascii_value=$(printf '%d' "'$char")
+
+ if [ $ascii_value -gt 122 ]
+     then
+          if [ `expr $ascii_value + $ShiftValue` -gt 126 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue - 4`))
+          else char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue`))
+                Encoded="$Encoded$char"
+        continue
+      fi
+     fi
+
+if [ $ascii_value -le 64 -a $ascii_value -gt 32 ]
+     then
+          if [ `expr $ascii_value + $ShiftValue` -gt 64 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue - 32`))
+          else char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue`))
+                Encoded="$Encoded$char"
+        continue
+      fi
+     fi
+
+      if [ $ascii_value -gt 90 -a  $ascii_value -lt 97  ]
+   	then
+          if [ `expr $ascii_value + $ShiftValue` -gt 96 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue - 6`))
+          else char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue`))
+                Encoded="$Encoded$char"
+        continue
+       fi
+      fi
+
+      if [ $ascii_value -ge 97 ]
+       then
+	  if [ `expr $ascii_value + $ShiftValue` -gt 122 ]
+		then
+		 char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue - 26`))
+	  else char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue`))
+		Encoded="$Encoded$char"
+        continue
+      fi
+     fi
+
+
+	if [ $ascii_value -le 90 -a $ascii_value -ge 65 ]
+	 then
+          if [ `expr $ascii_value + $ShiftValue` -gt 90 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue - 26`))
+          else char=$(printf \\$(printf '%03o' `expr $ascii_value + $ShiftValue`))
+                Encoded="$Encoded$char"
+        continue
+      fi
+     fi
+
+
+   Encoded="$Encoded$char"
+
+done
+echo "Encoded text : $Encoded"
+;;
+
+'d')
+
+echo "Enter the text you want to DECODE: "
+ read TextToDecode
+
+
+while [ 1 ]
+ do
+  echo "Enter shift value [1:25]: "
+   read ShiftValue
+  if [ $ShiftValue -ge 1 -a $ShiftValue -le 25 ]
+   then
+     break
+  else echo "The entered KEY value is outside the range!!"
+   fi
+ done
+
+
+for ((i = 0; i < ${#TextToDecode}; i++));
+ do
+     char="${TextToDecode:$i:1}"
+   ascii_value=$(printf '%d' "'$char")
+
+
+ if [ $ascii_value -gt 122 ]
+     then
+          if [ `expr $ascii_value - $ShiftValue` -lt 122 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue + 4`))
+          else char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue`))
+                Decoded="$Decoded$char"
+        continue
+      fi
+     fi
+if [ $ascii_value -le 64 -a $ascii_value -gt 32 ]
+     then
+          if [ `expr $ascii_value - $ShiftValue` -lt 33 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue + 32`))
+          else char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue`))
+                Decoded="$Decoded$char"
+        continue
+      fi
+     fi
+
+      if [ $ascii_value -gt 90 -a  $ascii_value -lt 97  ]
+   	then
+          if [ `expr $ascii_value - $ShiftValue` -lt 91 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue + 6`))
+          else char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue`))
+                Decoded="$Decoded$char"
+        continue
+       fi
+      fi
+
+      if [ $ascii_value -ge 97 ]
+       then
+	  if [ `expr $ascii_value - $ShiftValue` -lt 97 ]
+		then
+		 char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue + 26`))
+	  else char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue`))
+		Decoded="$Decoded$char"
+        continue
+      fi
+     fi
+
+
+	if [ $ascii_value -le 90 -a $ascii_value -ge 65 ]
+	 then
+          if [ `expr $ascii_value - $ShiftValue` -lt 65 ]
+                then
+                 char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue + 26`))
+		else char=$(printf \\$(printf '%03o' `expr $ascii_value - $ShiftValue`))
+                Decoded="$Decoded$char"
+        continue
+      fi
+     fi
+
+
+   Decoded="$Decoded$char"
+
+
+ done
+echo "Decoded text : $Decoded"
+;;
+
+*)
+echo "OOPS! It seems like the you have selected a service we dont provide): "
+;;
+esac
+;;
+
+*)
+echo "Too many arguments.."
+;;
+esac
